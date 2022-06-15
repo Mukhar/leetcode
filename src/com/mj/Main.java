@@ -21,7 +21,32 @@ public class Main {
             System.out.println(nums1[i]);
         }
 }
-
+public int fib(int n) {
+    int arr[]= new int[31];
+    arr[0]= 0;
+    arr[1]= 1;
+    
+    for(int i=2;i<n;i++){
+       a[i]=a[i-1]+a[i-2]; 
+    }
+return a[n-1];
+}
+public ListNode deleteDuplicates(ListNode head) {
+    if (head==null)
+        return head;
+    ListNode newhead = head;
+    int temp=head.val;
+    while(head!=null){
+        if(head.next!=null && head.next.val==temp){
+            head.next=head.next.next;
+        }
+        else{
+            head=head.next;
+            temp=head.val;
+        }
+    }
+    return newhead;
+}
 public List<Integer> inOrderTraversal(TreeNode root){
     List<Integer> list= new ArrayList<>();
     if (root==null)
