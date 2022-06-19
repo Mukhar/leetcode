@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.Stack;
+
 
 
 public class Main {
@@ -13,18 +13,168 @@ public class Main {
     public static void main(String[] args) {
 	// write your code here
 
-        int nums1[] = {1,2,3,0,0,0};
-
-        int nums2[] = {2,5,6};
-        merge(nums1, nums1.length-nums2.length, nums2, nums2.length);
-        for (int i = 0; i < nums1.length; i++) {
-            System.out.println(nums1[i]);
+     System.out.println(lengthOfLongestSubstring("dvdf"));
         }
+public static List<String> gg(int n){
+    List<String> li = new ArrayList<>();
+    backtrack(li, new StringBuilder(), 0, 0, n);
+    return li; 
+}
+public static void backtrack(List<String> list, StringBuilder curr, int open, int close, int max){
+    if(curr.length()==max*2){
+        list.add(curr.toString());
+    }
+    if(open<max){
+        curr.append('(');
+        backtrack(list, curr, open+1, close, max);
+        curr.deleteCharAt(curr.length()-1);
+    }
+    if(close<max){
+        curr.append(')');
+        backtrack(list, curr, open, close+1, max);
+        curr.deleteCharAt(curr.length()-1);
+    }
+}
+
+public static int lengthOfLongestSubstring(String s) {
+    int left=0;
+    int right=0;
+    int max=0;
+    HashSet ns= new HashSet<>();
+    while(right<s.length()){
+        char ch= s.charAt(right);
+        if(!ns.contains(ch)){
+            ns.add(ch);
+            max=Math.max(max, ns.size());
+            right++;
+        }
+        else{
+            ns.remove(s.charAt(left));
+            left++;            
+        }
+    }
+     return max;   
+}
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+ ListNode newList = new ListNode();
+ ListNode head=newList;
+ int carry=0;
+ while(l1!=null & l2!=null){
+    int ans= l1.val+l2.val+carry;
+     carry = ans/10;
+    newList.next=new ListNode(ans%10);
+   
+    l1=l1.next;
+    l2=l2.next;newList=newList.next;
+ } 
+ while(l1!=null){
+    int ans= l1.val+carry;
+     carry = ans/10;
+    newList.next=new ListNode(ans%10);
+    newList=newList.next;
+    l1=l1.next;
+ }
+ while(l2!=null){
+    int ans= l2.val+carry;
+     carry = ans/10;
+    newList.next=new ListNode(ans%10);
+    newList=newList.next;
+    l2=l2.next;
+ }
+ return head.next;
+}
+
+// public int climbStairs(int n) {
+// if(li.!=-1)
+//     return (int)li.get(n);
+
+// if(n==0){
+//     return 1;
+// }    
+// this.li[n] = climbStairs(n-1)+climbStairs(n-2);
+// return this.li[n];
+// }
+
+public static int numJewelsInStones(String jewels, String stones) {
+        HashSet<Character> newSet= new HashSet<>();
+        for (Character character : jewels.toCharArray() ) {
+            newSet.add(character);
+        }
+        HashMap<Character,Integer> newMap = new HashMap<>();      
+        for (Character character : stones.toCharArray() ) {
+            if(!newMap.containsKey(character))
+            newMap.put(character,1);
+            else
+            newMap.put(character, newMap.get(character)+1);
+        }
+        int ans=0;
+        for (Character character : newSet) {
+            if(newMap.containsKey(character)){
+                ans+=(int)newMap.get(character);
+            }
+        }
+        return ans;
+        }
+
+public int finalValueAfterOperations(String[] operations) {
+    int ans=0;
+    for (String string : operations) {
+    
+    if(string.contains("--")){
+        ans-=1;
+
+    }
+    else if(string.contains("++")){
+        ans+=1;
+    }
+    }
+    return ans;       
+}
+public String defangIPaddr(String address) {
+    return address.replaceAll("\\.", "[.]");
+}
+public int[] intersect(int[] nums1, int[] nums2) {
+    HashMap<Integer,Integer> newMap = new HashMap<>();
+    HashMap<Integer,Integer> newMap1 = new HashMap<>();
+    for (int i = 0; i < nums1.length; i++) {
+        int key = nums1[i];
+        if(newMap.containsKey(key))
+           {
+            int val = newMap.get(key);
+            newMap.put(key , val+1);
+        }
+        else
+            {
+                newMap.put(key,1);
+            }    
+    }
+    List<Integer> list= new ArrayList<>();
+    for (int i = 0; i < nums2.length; i++) {
+        int key = nums2[i];
+        if(newMap1.containsKey(key))
+           {
+            int val = newMap1.get(key);
+            newMap1.put(key , val+1);
+        }
+        else{
+            newMap1.put(key, 1);
+        }
+    }
+    for (Integer keyy : newMap.keySet()) {
+        if(newMap1.containsKey(keyy)){
+            for (int i = 0; i < Math.max(newMap.get(keyy), newMap1.get(keyy)); i++) {
+                list.add(keyy);    
+            }   
+        }
+        
+    }
+    int[] ex= list.stream().mapToInt(i->i).toArray();
+    return ex;   
 }
 public int fib(int n) {
-    int arr[]= new int[31];
-    arr[0]= 0;
-    arr[1]= 1;
+    int a[]= new int[31];
+    a[0]= 0;
+    a[1]= 1;
     
     for(int i=2;i<n;i++){
        a[i]=a[i-1]+a[i-2]; 
@@ -129,7 +279,7 @@ public static void merge(int[] nums1, int m, int[] nums2, int n) {
         }
         return nums;
     }
-    public int[] intersect(int[] nums1, int[] nums2) {
+    public int[] intersect1(int[] nums1, int[] nums2) {
         int n=nums1.length;
         int m=nums2.length;
         int max=0;
