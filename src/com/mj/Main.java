@@ -1,6 +1,7 @@
 package com.mj;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,13 +13,57 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-
-     System.out.println(lengthOfLongestSubstring("dvdf"));
-        }
-public static List<String> gg(int n){
+        int[] nums = {3,1,4,2};
+        Solution ss = new Solution();
+        int[][] points = {{1,2},{2,3},{2,4},{4,5}};
+        int[] plants = {2,2,3,5};
+        int capacity = 5;
+        int[][] grid =  {{1,0,0},{0,0,0},{0,0,0}};    
+        // ss.maxDistance(grid);
+        String[] words1 = {"amazon","apple","facebook","google","leetcode"};
+        String[] words2 = {"ec","oc","ceo"};
+        ss.wordSubsets(words1, words2);
+    }
+    public static List<String> gg(int n){
     List<String> li = new ArrayList<>();
-    backtrack(li, new StringBuilder(), 0, 0, n);
+
+    // backtrack(li, new StringBuilder(), 0, 0, n);
+   
     return li; 
+}
+public static int reverse(int x) {
+    int ans=0;
+    while(x!=0){
+        int pop = x%10;
+        x/=10;
+        if(ans>Integer.MAX_VALUE/10 ||(ans==Integer.MAX_VALUE/10 && pop>7))
+            return 0;
+        
+        if(ans<Integer.MIN_VALUE/10 ||(ans==Integer.MIN_VALUE/10 && pop<-8))
+            return 0;
+        ans=ans*10+pop;
+    }
+
+    return ans;
+   }
+// public int[] minOperations(String boxes) {
+//  int left=0;
+//  int right =0;       
+//  for (int i = 0; i < boxes.length(); i++) {
+//     if(boxes.charAt(i)==1){
+//         right++;
+//     }
+//  }
+//  for (int i = 0; i < boxes.length(); i++) {  
+//  }
+// }
+public static int minPartitions(String n) {
+   char ch[]= n.toCharArray();
+   int max=0;
+   for (char c : ch) {
+    max=Math.max(max,Integer.parseInt(Character.toString(c)));
+   }
+   return max;
 }
 public static void backtrack(List<String> list, StringBuilder curr, int open, int close, int max){
     if(curr.length()==max*2){
@@ -40,7 +85,7 @@ public static int lengthOfLongestSubstring(String s) {
     int left=0;
     int right=0;
     int max=0;
-    HashSet ns= new HashSet<>();
+    HashSet<Character> ns= new HashSet<>();
     while(right<s.length()){
         char ch= s.charAt(right);
         if(!ns.contains(ch)){
@@ -83,7 +128,33 @@ public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
  }
  return head.next;
 }
+public static int minSubarray(int[] nums, int p) {
+    int sum = Arrays.stream(nums).sum();
+        int ans = sum%p;
+        if(ans==0){
+            return 0;
+        }
+        int i=0;
+        int j=0;
+        int n=nums.length;
+        int val=0;
+        System.out.println(ans);
+        int a=Integer.MAX_VALUE;
+        while(i<=j && j<n){
+            if(val%p==ans){
+             a=Math.min(a, j-i);
+             j++;
+            }
+            if(val<ans){
+                val+=nums[j++];
+            }
+            else if ( val> ans){
+                val-=nums[i++];
+            }
+        }
+    return a;
 
+}
 // public int climbStairs(int n) {
 // if(li.!=-1)
 //     return (int)li.get(n);
@@ -94,7 +165,35 @@ public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 // this.li[n] = climbStairs(n-1)+climbStairs(n-2);
 // return this.li[n];
 // }
+public int[] intersection(int[] nums1, int[] nums2) {
+    HashSet<Integer> hs = new HashSet<>();
+    HashSet<Integer> hs1 = new HashSet<>();
+    for(int in:nums1){
+        hs.add(in);
+    }
+    int[] ans = new int[hs.size()];
+    int j=0;
+    for(int in:nums2){
+        if (hs.contains(in)){
+            ans[j++]=in;
+            hs.remove(in); 
+        }
+    }
+    return Arrays.copyOf(ans, --j);    
+}
+public static boolean valieParenthesis(String str){
+    Stack<Character> stack = new Stack<>();
+    for (Character character : str.toCharArray()) {
+        if(character=='(')
+            stack.push(')');
+        else if(stack.isEmpty() || stack.pop()!=character){
+            return false;
+        }
 
+                
+    }
+    return stack.isEmpty();
+}
 public static int numJewelsInStones(String jewels, String stones) {
         HashSet<Character> newSet= new HashSet<>();
         for (Character character : jewels.toCharArray() ) {
@@ -293,6 +392,9 @@ public static void merge(int[] nums1, int m, int[] nums2, int n) {
             }
         }  
     }
+    // for (int i : a) {
+        
+    // }
     return nums1;
     }
     public int firstUniqChar(String s) {
@@ -309,7 +411,7 @@ public static void merge(int[] nums1, int m, int[] nums2, int n) {
         return -1;
     }
     public static boolean isValidSudoku(char[][] board) {
-        HashSet col = new HashSet<>();
+        HashSet<String> col = new HashSet<>();
 
         for (int i = 0; i < 9; i++) {
             HashSet<Character> newSet = new HashSet<>();
@@ -377,3 +479,4 @@ public static void merge(int[] nums1, int m, int[] nums2, int n) {
             return true;
     }
 }
+
