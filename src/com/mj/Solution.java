@@ -1,6 +1,7 @@
 package com.mj;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -270,6 +271,44 @@ public class Solution {
             if(flag == true)
                 ans.add(word);
         }return ans;
+    }
+    
+    public long[] kthPalindrome(int[] queries, int intLength) {
+        int n = queries.length;
+        long[] pall = new long[n]; 
+        long start = 0;
+        long end = 0;
+        start = (long)Math.pow(10, intLength-1);
+        end = (long) Math.pow(10, intLength)-1;
+        int i=0;
+        for(int nums :queries){
+            if(nums<=end-start-1){
+                String fh = (""+(start+nums-1));
+                String sh = (new StringBuffer(fh)).reverse().toString();
+                pall[i++]=Long.parseLong(fh+sh.substring(intLength%2));
+            }
+            else{
+                pall[i++]=-1;
+            }
+        }
+        return pall;
+    }
+    public boolean isPalindrome(int x) {
+        int num = x;
+        if (num<0){
+            return false;
+        }
+        String str = String.valueOf(num);
+        int l = 0;
+        int r = str.length() - 1;
+        while(l<r){
+            if(str.charAt(l) != str.charAt(r)){
+                return false;
+            }
+            l++; 
+            r--;
+        }
+        return true;
     }
 
 }
