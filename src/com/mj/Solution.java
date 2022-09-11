@@ -1,7 +1,6 @@
 package com.mj;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -310,5 +309,92 @@ public class Solution {
         }
         return true;
     }
+    
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+        List<List<String>> result = new ArrayList<>();
+        int start = 0, end = products.length-1;
+        int remain = 0;
+        for (int i = 0; i < searchWord.length(); i++) {
+            char c = searchWord.charAt(i);
+            while(start<=end && (products[start].length()<=i) || products[start].charAt(i)!= c){
+                start+=1;
+            }
+            while(start<=end && (products[end].length()<=i) || products[end].charAt(i)!= c){
+                end-=1;
+            }
+            remain = end-start+1;
+            List<String> res1;
+                res1 = new ArrayList<String>();
+            for (int j = 0; j < Math.min(3,remain); j++) {
+                res1.add(products[start+j]);    
+            }
+            result.add(res1);
+        }
+        return result;
+        
+    }
+    public boolean exist(char[][] board, String word) {
+        char[][] visited =Arrays.stream(board).map(char[] ::clone).toArray(char[][]::new) ;      
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if(board[i][j]==word.charAt(0)){
+                    for (int k = 0; k < board.length; k++) 
+                        for (int l = 0; l < board[0].length; l++)
+                            visited[k][l]='0';  
+                    boolean ans = helper(board, visited, word,i,j, 0);
+                        if(ans){
+                            return true;
+                        }
+                }
+            }
+        }
+        return false;
+    }
+    public boolean helper(char[][] board, char[][] visited, String word,int i, int j, int n){
+        int[][] directions = new int[][] {{1,0},{-1,0},{0,1},{0,-1}};
+        
+        if(n==word.length()){
+            return true;
+        }
+        if(i>=0 && j>=0 && i<board.length && j < board[0].length && visited[i][j]!='1' && board[i][j]==word.charAt(n)){
+            visited[i][j]='1';
+            boolean ans = false;
+            for(int[] point : directions){
+                int x=i+point[0];
+                int y=j+point[1];
+                if(x>=0 && y>=0 && x<board.length && y < board[0].length)
+                   ans = ans || helper(board, visited, word, x, y, n+1);
+            }
+            visited[i][j]='0';
+            return ans;
+    }
+    return false;
+    }
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> freq = new HashSet();
+        if(nums.length==1 || k==0){
+            return false;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if(i>k){
+                freq.remove(nums[i-k-1]);
+            if(!freq.add(nums[i])){
+                return true;
+            }
 
+            }
+        }
+        return false;
+}
+public int divisorSubstrings(int num, int k) {
+    int count =0;
+    StringBuilder s = new StringBuilder(Integer.toString(num));
+    Set<String> set = new HashSet<>();
+    for(int i=0;i<s.length();i++){
+        set.add(s.substring(i,i+k));    
+    }
+    set.remove("0");
+    return set.size();
+}
 }

@@ -19,10 +19,15 @@ public class Main {
         int[] plants = {2,2,3,5};
         int capacity = 5;
         int[][] grid =  {{1,0,0},{0,0,0},{0,0,0}};    
+        char[][] board = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+        String word = "SEE";
+        
         // ss.maxDistance(grid);
         String[] words1 = {"amazon","apple","facebook","google","leetcode"};
         String[] words2 = {"ec","oc","ceo"};
-        ss.wordSubsets(words1, words2);
+        // ss.wordSubsets(words1, words2);
+        // ss.exist(board, word);
+        ss.containsNearbyDuplicate(new int[] {1,0,1,1},1);
     }
     public static List<String> gg(int n){
     List<String> li = new ArrayList<>();
