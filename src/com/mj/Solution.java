@@ -3,16 +3,21 @@ package com.mj;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 
 public class Solution {
+    int[][] directions= new int[][] {{1,0},{-1,0},{0,1},{0,-1}};
+
     public TreeNode constructMaximumBinaryTree(int[] nums) {
         TreeNode tn=new TreeNode();
         if(nums.length==0){
@@ -396,5 +401,216 @@ public int divisorSubstrings(int num, int k) {
     }
     set.remove("0");
     return set.size();
+}
+    List<List<Integer>> l1 = new ArrayList();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<Integer> l3 = new ArrayList();
+        helper(root,targetSum,l3);
+        return this.l1;
+    }
+    public void helper(TreeNode node, int targetSum,List<Integer> l2){
+        if(node==null){
+            return;
+        }
+        
+            // System.out.println(targetSum);
+        if(node.left==null && node.right==null && targetSum==node.val){
+            List<Integer> newL = new ArrayList<Integer>();
+            newL.addAll(new ArrayList<>(l2));
+            this.l1.add(newL);
+            return;
+        }
+        l2.add(node.val);
+        helper(node.left,targetSum-node.val,l2);
+        helper(node.right,targetSum-node.val,l2);
+        l2.remove(l2.size()-1);
+    }
+    public int deleteAndEarn(int[] nums) {
+        HashMap<Integer,Integer> hm = new HashMap();
+         for (int i = 0; i < nums.length; i++) {
+            if(hm.putIfAbsent(nums[i], 1)!=null){
+                hm.replace(nums[i], 1+hm.get(nums[i]));
+            }
+            
+        }
+        int sum=0;
+        while(hm.size()>0){
+            int key= getMaxVal(hm);
+            int val = hm.get(key);
+            sum+=val;
+            hm.replace(key,val-1);
+            if(hm.containsKey(key+1))
+                hm.remove(key+1);
+            if(hm.containsKey(key-1))
+                hm.remove(key-1);
+        }
+        return sum;
+    }
+    public int getMaxVal(HashMap<Integer,Integer> hm){
+        int ans=0;
+        int max= 0;
+        for (Integer number: hm.keySet()) {
+            if(hm.get(number)>max){
+                ans=number;
+                max=hm.get(number);
+            }
+        }
+        return ans;
+    }
+    // public int numIslands(char[][] grid) {
+    //     int count =0;
+    //     for (int i = 0; i < grid.length; i++) {
+    //         for (int j = 0; j < grid[0].length; j++) {
+    //             if(grid[i][j]!='2' && grid[i][j]=='1'){
+    //                 count+=1;
+    //                 dfs(grid,i,j);
+    //             }    
+    //         }
+    //     }   
+    //    return count;
+    
+    // }
+    public void dfs(char[][] grid,int i,int j){
+        
+        for(int[] dir :directions){
+            int x = i + dir[0];
+            int y = j + dir[1];
+            if(grid[x][y]!='2' && grid[x][y]!='0'){
+                grid[x][y]='2';
+                dfs(grid,x,y);
+            }
+        }
+    }
+
+    // public int[] dailyTemperatures(int[] temperatures) {
+    //     Stack<int[]> v = new Stack();
+    //     Stack<Integer> i = new Stack();
+    //     int[] ans = new int[temperatures.length];
+    //     if(temperatures.length<=1)
+    //         return new int[1];
+    //     int index =0;
+    //     v.add(new int[] {temperatures[index],index});
+    //     i.add(index++);
+    //     while(v.size()>0 && index<temperatures.length){
+    //         while(temperatures[index] > v.peek()[0]){
+    //             v.pop();
+    //             int ind = i.pop();
+    //             ans[ind]=index-ind;
+    //         }
+    //         v.add(temperatures[index]);
+    //         i.add(index++);
+    //     }
+    //     return ans;
+    // }
+    public int[][] kClosest(int[][] points, int k) {
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a,b) -> a[0]-b[0]);
+    
+        for(int i=0;i<points.length;i++){
+            pq.add(new int[] {points[i][0],points[i][1]});
+        }
+        int[][] ans = new int[k][2];
+        while(k>0){
+            ans[k--]=pq.poll();
+    
+        } 
+    return ans;
+    }
+
+    public int getCommon(int[] nums1, int[] nums2) {
+        int i=0,j=0;
+
+        while(i <nums1.length && j< nums2.length){
+            if(nums1[i]==nums2[j]){
+                return nums1[i];
+            }
+            if(nums1[i]<nums2[j]){
+                i++;
+            }
+            else{
+                j++;
+            }
+    }
+    while(i<nums1.length){
+        if(nums1[i]==nums2[j-1]){
+            return nums1[i]; 
+        }
+        i++;
+    }
+    while(j<nums2.length){
+        if(nums1[i-1]==nums2[j]){
+            return nums2[j]; 
+        }
+        j++;
+    }
+    return -1;
+}
+public long minOperations(int[] nums1, int[] nums2, int k) {
+    int ans = 0;
+    List<Integer> s = new ArrayList<>();
+    for(int i=0;i<nums1.length;i++){
+        int x = nums1[i]-nums2[i];
+        ans^= Math.abs(x);
+        s.add(x);
+    }
+
+    if(k==0 || ans !=0)
+        return -1;
+    if(ans ==0 ){
+        return s.size()/2;
+    }
+    return -1;
+}
+
+public boolean lemonadeChange(int[] bills) {
+    int[] note = new int[3];
+    boolean ans = true;
+    for(int i=0;i<bills.length;i++){
+        if(bills[i]==5){
+            note[0]++;
+        }
+        else if (bills[i]==10){
+            if(note[0]>=1){
+                note[0]--;
+                note[1]++;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            if(note[1]>=1 && note[0]>=1) {
+                note[1]--;
+                note[0]--;
+                note[2]++;
+            } 
+            else if(note[1]<1 && note[0]>=3){
+                note[0]-=3;
+                note[2]++;
+            }
+            else{
+                ans=false;
+                return false;
+            }
+        }
+    }
+    return ans; 
+}
+
+public int countMinLetters(String s) {
+    int max = 0;
+    if (s.length() <= 1)
+        return 0;
+    int i = 1;
+    int point = 0;
+    int count = 0;
+    while (i < s.length()) {
+        if (s.charAt(i) != s.charAt(i - 1)) {
+            max = Math.max(max, i - point);
+            count ++;
+            point = i;
+        }
+        i++;
+    }
+    return (count +1 )*max - s.length();
 }
 }
