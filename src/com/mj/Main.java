@@ -34,8 +34,8 @@ public class Main {
         // ss.deleteAndEarn(nums);
         // testtrie();
 
-        int ans = ss.countMinLetters("aabbba");
-        System.out.println(ans);
+        // int ans = ss.countMinLetters("aabbba");
+        System.out.println(ss.removeDigit("-5859", '5'));
     }
 
     public static void testtrie() {
