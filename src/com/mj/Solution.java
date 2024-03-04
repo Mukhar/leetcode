@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -770,13 +771,6 @@ public class Solution {
         return degree[node1] + degree[node2] - (neighbors.contains(node1) && neighbors.contains(node2) ? 1 : 0);
     }
 
-    public static void main(String[] args) {
-        int n = 4;
-        int[][] roads = {{0, 1}, {0, 3}, {1, 2}, {1, 3}};
-        System.out.println(maximalNetworkRank(n, roads)); // Output: 4
-    }
-
-
 
 
 // you can also use imports, for example:
@@ -870,5 +864,71 @@ public class Solution {
             }
         return sb.reverse().toString();
         }
+
+        public boolean closeStrings(String word1, String word2) {
+            int[] arr1 = new int[26];
+            int[] arr2 = new int[26];
+            for(int i=0;i<word1.length();i++){
+                arr1[word1.charAt(i)-'a']++;    
+            } 
+            for(int i=0;i<word2.length();i++){
+                arr2[word2.charAt(i)-'a']++;    
+            } 
+            return Arrays.compare(arr1,arr2)==0?true:false;
+        }
+
+        public String mergeAlternately(String word1, String word2) {
+            char[] a = word1.toCharArray();
+            char[] b = word2.toCharArray();
+            int i=0;
+            StringBuilder sb  = new StringBuilder();
+            for(i=0;i<Math.min(a.length,b.length);i++){
+                sb.append(a[i]);
+                sb.append(b[i]);
+            }
+            if(i<a.length){
+                for(int j =i;j<a.length;j++)
+                    sb.append(a[j]);
+            } 
+            else{
+                for(int j =i;j<b.length;j++)
+                sb.append(b[i]);
+            }
+            return sb.toString();
+        }
+        public int[] asteroidCollision(int[] asteroids) {
+            int n = asteroids.length;
+            Stack<Integer> s = new Stack<Integer>();
+            for(int i=0;i<n;i++){
+                int x = asteroids[i];
+                while(!s.isEmpty() && s.peek() * x < 0 && x!=0){
+                    if(Math.abs(s.peek())>Math.abs(x)){
+                        x=0;
+                        break;
+                    }
+                    else if (Math.abs(s.peek())==Math.abs(x)){  
+                        s.pop();
+                        x=0;
+                    }
+                    else{
+                        s.pop();
+                    }
+                }
+                if(x!=0){
+                    s.push(x);
+                }
+            }
+            int[] arr = new int[s.size()];
+            Collections.reverse(Arrays.asList(s));
+            int i=0;
+            Random r = new Random();
+            r.nextInt();
+            // for (int x :) {
+            //     arr[i++]=s.pop();
+            // }
+            return arr;
+        }
+
+        
 
 }
